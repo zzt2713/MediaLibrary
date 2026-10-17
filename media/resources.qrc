@@ -1,0 +1,17 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <!--
+        只打包样式表。
+
+        图标不用图片资源：全部由 Icons.cpp 里的 QPainter 代码矢量绘制，
+        这样任何 DPI 下都锐利，颜色也能跟随主题，不需要为每个尺寸准备一份图。
+    -->
+    <qresource prefix="/media">
+        <!--
+            alias 是必需的：没有它，资源路径会是 :/media/ui/resources/style.qss，
+            而 ThemeManager 查的是 :/media/style.qss，永远命中不了。
+            开发期靠文件系统相对路径兜底还能蒙对，打包部署后样式表会整个丢失。
+        -->
+        <file alias="style.qss">ui/resources/style.qss</file>
+    </qresource>
+</RCC>

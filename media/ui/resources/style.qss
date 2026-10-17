@@ -1,0 +1,827 @@
+QWidget {
+    color: %TEXT_PRIMARY%;
+    font-family: "Microsoft YaHei UI", "Segoe UI", "PingFang SC", sans-serif;
+    font-size: 13px;
+}
+
+QMainWindow, QDialog, QStackedWidget {
+    background-color: %WINDOW_BG%;
+}
+
+/* 纯文字控件一律不铺底，背景来自它所在的容器。 */
+QLabel, QCheckBox, QRadioButton, QGroupBox {
+    background: transparent;
+}
+
+/* Tooltip bubble */
+QToolTip {
+    background-color: %SURFACE%;
+    color: %TEXT_PRIMARY%;
+    border: 1px solid %BORDER%;
+    border-radius: 6px;
+    padding: 6px 10px;
+}
+
+/* ---------------------------------------------------------------- top bar */
+
+#TopBar {
+    background-color: %PANEL_BG%;
+    border-bottom: 1px solid %BORDER%;
+}
+
+#AppTitle {
+    color: %TEXT_PRIMARY%;
+    font-size: 14px;
+    font-weight: 600;
+    padding-left: 4px;
+}
+
+/* Search box: rounded, inset, highlighted border on focus */
+#SearchBox {
+    background-color: %SURFACE%;
+    border: 1px solid %BORDER_SUBTLE%;
+    border-radius: 8px;
+    padding: 6px 12px 6px 30px;
+    color: %TEXT_PRIMARY%;
+    selection-background-color: %ACCENT%;
+}
+
+#SearchBox:focus {
+    border: 1px solid %ACCENT%;
+    background-color: %SURFACE_HOVER%;
+}
+
+/*
+ * Placeholder text color comes from QPalette::PlaceholderText (see ThemeManager::applyPalette).
+ * QSS has no ::placeholder pseudo element, so writing one here has no effect. */
+
+/* ---------------------------------------------------------------- tab chips */
+
+#TabBar {
+    background-color: %PANEL_BG%;
+    border-bottom: 1px solid %BORDER%;
+}
+
+QPushButton[chip="true"] {
+    background-color: transparent;
+    border: 1px solid %BORDER_SUBTLE%;
+    border-radius: 14px;
+    padding: 4px 14px;
+    color: %TEXT_SECONDARY%;
+    text-align: center;
+}
+
+QPushButton[chip="true"]:hover {
+    background-color: %SURFACE_HOVER%;
+    color: %TEXT_PRIMARY%;
+}
+
+QPushButton[chip="true"]:checked {
+    background-color: %ACCENT_SUBTLE%;
+    border: 1px solid %ACCENT%;
+    color: %TEXT_PRIMARY%;
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- sidebar */
+
+#Sidebar {
+    background-color: %PANEL_BG%;
+    border-right: 1px solid %BORDER%;
+}
+
+#SidebarSectionTitle {
+    color: %TEXT_DISABLED%;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 12px 14px 6px 14px;
+}
+
+/* Sidebar group items. QListWidget carries them; padding sets the row height. */
+#SidebarList {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 2px 8px;
+}
+
+#SidebarList::item {
+    height: 34px;
+    border-radius: 6px; /* Radius::Control */
+    padding-left: 8px;
+    margin: 1px 0;
+    color: %TEXT_SECONDARY%;
+}
+
+#SidebarList::item:hover {
+    background-color: %SURFACE%;
+    color: %TEXT_PRIMARY%;
+}
+
+#SidebarList::item:selected {
+    background-color: %ACCENT_SUBTLE%;
+    color: %TEXT_PRIMARY%;
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- folder tree */
+
+/*
+ * 目录树。行背景由 FolderTreeDelegate 自己整行绘制（见 SidebarWidget.cpp），
+ * 这里只负责文字颜色与"禁止 QSS 再画一遍条目背景"。
+ *
+ * 为什么必须交给 delegate：
+ * QTreeView::drawRow() 会把每一行拆成两段分别向样式表要背景——先画缩进区
+ * （分支箭头那一段），再画文本区。两段各自套用 ::item 的 border-radius，
+ * 于是选中的是一条行被画成"左边一个圆角小方块 + 右边一个圆角长条"，
+ * 中间还夹着分支箭头的空白，就是用户看到的"右边有个小方块"。
+ * 那个小方块其实是缩进区的背景，不是额外的控件。
+ */
+#FolderTree {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 2px 6px;
+    show-decoration-selected: 1;
+}
+
+#FolderTree::item {
+    height: 30px;
+    color: %TEXT_SECONDARY%;
+    background: transparent;
+}
+
+#FolderTree::item:hover,
+#FolderTree::item:selected,
+#FolderTree::item:disabled {
+    /* 交给 delegate 整行绘制，避免缩进区与文本区各画一半 */
+    background: transparent;
+}
+
+/* 分支箭头：默认样式在深色底上是几乎看不见的黑色三角，这里换成主题色 */
+#FolderTree::branch {
+    background: transparent;
+}
+
+#FolderTree::branch:has-children:!has-siblings:closed,
+#FolderTree::branch:closed:has-children:has-siblings {
+    border-image: none;
+    image: none;
+}
+
+#FolderTree::branch:open:has-children:!has-siblings,
+#FolderTree::branch:open:has-children:has-siblings {
+    border-image: none;
+    image: none;
+}
+
+/* ---------------------------------------------------------------- thumbnail grid */
+
+#ThumbnailGrid {
+    background-color: %WINDOW_BG%;
+    border: none;
+    outline: none;
+    padding: 12px;
+}
+
+#ThumbnailGrid::item {
+    border-radius: 10px;
+    color: %TEXT_SECONDARY%;
+    padding: 6px;
+    margin: 4px;
+}
+
+#ThumbnailGrid::item:hover {
+    background-color: %SURFACE%;
+    color: %TEXT_PRIMARY%;
+}
+
+/* Selection state: blue outline drawn by the delegate, background only here */
+#ThumbnailGrid::item:selected {
+    background-color: %ACCENT_SUBTLE%;
+    color: %TEXT_PRIMARY%;
+}
+
+/* List view (non-grid) row style */
+#MediaListView {
+    background-color: %WINDOW_BG%;
+    border: none;
+    outline: none;
+    alternate-background-color: %PANEL_BG%;
+}
+
+#MediaListView::item {
+    height: 30px;
+    color: %TEXT_SECONDARY%;
+    padding-left: 8px;
+}
+
+#MediaListView::item:hover {
+    background-color: %SURFACE%;
+    color: %TEXT_PRIMARY%;
+}
+
+#MediaListView::item:selected {
+    background-color: %ACCENT_SUBTLE%;
+    color: %TEXT_PRIMARY%;
+}
+
+/* ---------------------------------------------------------------- detail pane */
+
+#DetailPane {
+    background-color: %PANEL_BG%;
+    border-left: 1px solid %BORDER%;
+}
+
+#DetailPreview {
+    background-color: %SURFACE%;
+    border: 1px solid %BORDER_SUBTLE%;
+    border-radius: 10px;
+}
+
+#DetailFileName {
+    color: %TEXT_PRIMARY%;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#DetailSectionTitle {
+    color: %TEXT_DISABLED%;
+    font-size: 11px;
+    font-weight: 600;
+    padding-top: 10px;
+}
+
+#DetailKey {
+    color: %TEXT_DISABLED%;
+}
+
+#DetailValue {
+    color: %TEXT_PRIMARY%;
+}
+
+/* Add-tag input box.
+   It shares the outer parameters with the chip above (pill radius, 1px border,
+   matching color family), so "add" and "existing tags" read as one control group.
+   Must be written after the global QLineEdit rule; the #id selector weight wins. */
+#DetailTagInput {
+    background-color: transparent;
+    border: 1px dashed %BORDER_SUBTLE%;
+    border-radius: 12px;
+    padding: 3px 10px;
+    color: %TEXT_SECONDARY%;
+    font-size: 12px;
+    selection-background-color: %ACCENT%;
+}
+
+#DetailTagInput:hover {
+    border-color: %BORDER%;
+    color: %TEXT_PRIMARY%;
+}
+
+/* Empty-state hint for the tag area: same size as chip, height aligned */
+#DetailTagEmpty {
+    color: %TEXT_DISABLED%;
+    font-size: 12px;
+    padding-left: 2px;
+    background: transparent;
+}
+
+/* Focus promotes dashed to a solid accent line: dashed means optional, solid means editing */
+#DetailTagInput:focus {
+    background-color: %SURFACE%;
+    border: 1px solid %ACCENT%;
+    color: %TEXT_PRIMARY%;
+}
+
+/* Clear button follows the text color; the system dark grey is nearly invisible here. */
+#DetailTagInput QToolButton {
+    border: none;
+    background: transparent;
+    padding: 0px 2px;
+}
+
+#DetailTagInput QToolButton:hover {
+    background: transparent;
+}
+
+
+/* 类型徽标：只用类型色写字，不铺底色。
+   之前是半透明色块 + 描边，一块粉色小方块贴在文件名下面很跳。 */
+#DetailTypeBadge {
+    color: %TEXT_SECONDARY%;
+    font-size: 12px;
+    padding: 0;
+    background: transparent;
+}
+
+/* ---------------------------------------------------------------- tag chip
+ *
+ * chip 由 DetailPane::rebuildTagChips() 构造：
+ *   QWidget[chip="true"]
+ *     ├─ QLabel[chipText="true"]        标签文字（不接收鼠标）
+ *     └─ QToolButton[chipClose="true"]  × 删除按钮
+ *
+ * 之前是一个 QPushButton，文本写成 "标签　×"，点文字也会删标签，
+ * 且整块 hover 变红。现在文字区只显示，只有 × 可点。
+ */
+QWidget[chip="true"] {
+    background-color: %SURFACE%;
+    border: 1px solid %BORDER_SUBTLE%;
+    border-radius: 11px;
+}
+
+QWidget[chip="true"]:hover {
+    background-color: %SURFACE_HOVER%;
+    border-color: %BORDER%;
+}
+
+QLabel[chipText="true"] {
+    color: %TEXT_SECONDARY%;
+    font-size: 12px;
+    background: transparent;
+    border: none;
+}
+
+QToolButton[chipClose="true"] {
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    padding: 0;
+}
+
+QToolButton[chipClose="true"]:hover {
+    background-color: %DANGER%;
+}
+
+/* ---------------------------------------------------------------- tab container */
+
+QTabWidget::pane {
+    border: none;
+    background-color: %WINDOW_BG%;
+}
+
+QTabBar::tab {
+    background-color: transparent;
+    color: %TEXT_SECONDARY%;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 8px 16px;
+    margin-right: 4px;
+}
+
+QTabBar::tab:hover {
+    color: %TEXT_PRIMARY%;
+}
+
+QTabBar::tab:selected {
+    color: %TEXT_PRIMARY%;
+    border-bottom: 2px solid %ACCENT%;
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- buttons */
+
+QPushButton {
+    background-color: %SURFACE%;
+    border: 1px solid %BORDER_SUBTLE%;
+    border-radius: 6px; /* Radius::Control */
+    padding: 6px 14px;
+    color: %TEXT_PRIMARY%;
+    min-height: 18px;
+}
+
+QPushButton:hover {
+    background-color: %SURFACE_HOVER%;
+    border: 1px solid %BORDER%;
+}
+
+QPushButton:pressed {
+    background-color: %SURFACE_PRESSED%;
+}
+
+QPushButton:disabled {
+    color: %TEXT_DISABLED%;
+    background-color: %PANEL_BG%;
+    border: 1px solid %BORDER_SUBTLE%;
+}
+
+QPushButton:checked {
+    background-color: %ACCENT_SUBTLE%;
+    border: 1px solid %ACCENT%;
+}
+
+/* Icon button: square, no border, hover background only. */
+QPushButton[iconButton="true"] {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px; /* Radius::Control */
+    padding: 5px;
+    min-width: 28px;
+    max-width: 28px;
+    min-height: 28px;
+    max-height: 28px;
+}
+
+QPushButton[iconButton="true"]:hover {
+    background-color: %SURFACE_HOVER%;
+}
+
+QPushButton[iconButton="true"]:pressed {
+    background-color: %SURFACE_PRESSED%;
+}
+
+QPushButton[iconButton="true"]:checked {
+    background-color: %ACCENT_SUBTLE%;
+}
+
+/* Danger button */
+QPushButton[danger="true"]:hover {
+    background-color: %DANGER%;
+    color: #ffffff;
+    border: 1px solid %DANGER%;
+}
+
+/* ---------------------------------------------------------------- input controls */
+
+QLineEdit, QTextEdit, QPlainTextEdit {
+    background-color: %SURFACE%;
+    border: 1px solid %BORDER_SUBTLE%;
+    border-radius: 6px; /* Radius::Control */
+    padding: 6px 10px;
+    color: %TEXT_PRIMARY%;
+    selection-background-color: %ACCENT%;
+}
+
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
+    border: 1px solid %ACCENT%;
+}
+
+QLineEdit:disabled, QTextEdit:disabled {
+    color: %TEXT_DISABLED%;
+    background-color: %PANEL_BG%;
+}
+
+QComboBox {
+    background-color: %SURFACE%;
+    border: 1px solid %BORDER_SUBTLE%;
+    border-radius: 6px; /* Radius::Control */
+    padding: 5px 10px;
+    color: %TEXT_PRIMARY%;
+    min-height: 20px;
+}
+
+QComboBox:hover {
+    border: 1px solid %BORDER%;
+}
+
+QComboBox:focus {
+    border: 1px solid %ACCENT%;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 20px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: %SURFACE%;
+    border: 1px solid %BORDER%;
+    border-radius: 6px; /* Radius::Control */
+    selection-background-color: %ACCENT_SUBTLE%;
+    outline: none;
+    padding: 4px;
+}
+
+QSpinBox, QDoubleSpinBox {
+    background-color: %SURFACE%;
+    border: 1px solid %BORDER_SUBTLE%;
+    border-radius: 6px; /* Radius::Control */
+    padding: 5px 8px;
+    color: %TEXT_PRIMARY%;
+}
+
+QSpinBox:focus, QDoubleSpinBox:focus {
+    border: 1px solid %ACCENT%;
+}
+
+/* ---------------------------------------------------------------- checkbox / radio */
+
+QCheckBox, QRadioButton {
+    color: %TEXT_PRIMARY%;
+    spacing: 8px;
+    padding: 3px 0;
+}
+
+QCheckBox::indicator, QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    border: 1px solid %BORDER%;
+    background-color: %SURFACE%;
+}
+
+QCheckBox::indicator {
+    border-radius: 4px;
+}
+
+QRadioButton::indicator {
+    border-radius: 6px; /* Radius::Control */
+}
+
+QCheckBox::indicator:hover, QRadioButton::indicator:hover {
+    border: 1px solid %ACCENT%;
+}
+
+QCheckBox::indicator:checked, QRadioButton::indicator:checked {
+    background-color: %ACCENT%;
+    border: 1px solid %ACCENT%;
+}
+
+/* ---------------------------------------------------------------- slider */
+
+QSlider::groove:horizontal {
+    height: 4px;
+    background-color: %BORDER%;
+    border-radius: 2px;
+}
+
+QSlider::sub-page:horizontal {
+    background-color: %ACCENT%;
+    border-radius: 2px;
+}
+
+QSlider::handle:horizontal {
+    background-color: %TEXT_PRIMARY%;
+    width: 12px;
+    height: 12px;
+    margin: -5px 0;
+    border-radius: 6px;
+}
+
+QSlider::handle:horizontal:hover {
+    background-color: %ACCENT_HOVER%;
+}
+
+QSlider::groove:vertical {
+    width: 4px;
+    background-color: %BORDER%;
+    border-radius: 2px;
+}
+
+QSlider::add-page:vertical {
+    background-color: %ACCENT%;
+    border-radius: 2px;
+}
+
+QSlider::handle:vertical {
+    background-color: %TEXT_PRIMARY%;
+    height: 12px;
+    margin: 0 -5px;
+    border-radius: 6px;
+}
+
+/* ---------------------------------------------------------------- scrollbar */
+
+QScrollBar:vertical {
+    background: transparent;
+    width: 10px;
+    margin: 2px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: %BORDER%;
+    /* Scrollbar is 10px wide; radius = half gives a pill shape */
+    border-radius: 5px;
+    min-height: 30px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: %TEXT_DISABLED%;
+}
+
+QScrollBar:horizontal {
+    background: transparent;
+    height: 10px;
+    margin: 2px;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: %BORDER%;
+    border-radius: 5px;
+    min-width: 30px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background-color: %TEXT_DISABLED%;
+}
+
+/* Drop the arrows and gaps at both ends of the scrollbar for a modern look */
+QScrollBar::add-line, QScrollBar::sub-line {
+    height: 0;
+    width: 0;
+    border: none;
+    background: none;
+}
+
+QScrollBar::add-page, QScrollBar::sub-page {
+    background: none;
+}
+
+/* Scroll area itself is transparent */
+QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+
+QScrollArea > QWidget > QWidget {
+    background-color: transparent;
+}
+
+/* ---------------------------------------------------------------- splitter */
+
+QSplitter::handle {
+    background-color: %BORDER_SUBTLE%;
+}
+
+QSplitter::handle:horizontal {
+    width: 1px;
+}
+
+QSplitter::handle:vertical {
+    height: 1px;
+}
+
+QSplitter::handle:hover {
+    background-color: %ACCENT%;
+}
+
+/* ---------------------------------------------------------------- menu */
+
+QMenu {
+    background-color: %SURFACE%;
+    border: 1px solid %BORDER%;
+    border-radius: 8px;
+    padding: 6px;
+}
+
+QMenu::item {
+    padding: 7px 26px 7px 14px;
+    border-radius: 6px;
+    color: %TEXT_PRIMARY%;
+}
+
+QMenu::item:selected {
+    background-color: %ACCENT_SUBTLE%;
+}
+
+QMenu::item:disabled {
+    color: %TEXT_DISABLED%;
+}
+
+QMenu::separator {
+    height: 1px;
+    background-color: %BORDER_SUBTLE%;
+    margin: 5px 8px;
+}
+
+QMenuBar {
+    background-color: %PANEL_BG%;
+    color: %TEXT_PRIMARY%;
+    border-bottom: 1px solid %BORDER%;
+}
+
+QMenuBar::item {
+    padding: 6px 12px;
+    background: transparent;
+    border-radius: 6px;
+}
+
+QMenuBar::item:selected {
+    background-color: %SURFACE%;
+}
+
+/* ---------------------------------------------------------------- task panel */
+
+#TaskPanel {
+    background-color: %PANEL_BG%;
+    border-top: 1px solid %BORDER%;
+}
+
+#TaskPanelBody {
+    background-color: %PANEL_BG%;
+}
+
+/* ---------------------------------------------------------------- home page */
+
+#HomePage {
+    background-color: %WINDOW_BG%;
+}
+
+/* Home page list containers: no background, no border.
+   would fragment the home page into three grey blocks. */
+QFrame[card="true"] {
+    background: transparent;
+    border: none;
+}
+
+/* Home stat card: one left color bar (color passed per type in code), rest transparent */
+QFrame[stat="true"] {
+    background: transparent;
+    border: none;
+}
+
+/* ---------------------------------------------------------------- status bar */
+
+#StatusBar {
+    background-color: %PANEL_BG%;
+    border-top: 1px solid %BORDER%;
+    color: %TEXT_SECONDARY%;
+}
+
+#StatusBar QLabel {
+    color: %TEXT_SECONDARY%;
+}
+
+/* ---------------------------------------------------------------- progress bar */
+
+QProgressBar {
+    background-color: %SURFACE%;
+    border: none;
+    border-radius: 4px;
+    height: 6px;
+    text-align: center;
+    color: transparent;
+}
+
+QProgressBar::chunk {
+    background-color: %ACCENT%;
+    border-radius: 4px;
+}
+
+/* ---------------------------------------------------------------- dialog */
+
+QDialog {
+    background-color: %WINDOW_BG%;
+}
+
+QDialogButtonBox QPushButton {
+    min-width: 76px;
+}
+
+/* ---------------------------------------------------------------- table */
+
+QTableWidget, QTableView {
+    background-color: %SURFACE%;
+    alternate-background-color: %PANEL_BG%;
+    border: 1px solid %BORDER_SUBTLE%;
+    border-radius: 8px;
+    gridline-color: %BORDER_SUBTLE%;
+    outline: none;
+}
+
+QTableWidget::item, QTableView::item {
+    padding: 6px 8px;
+    border: none;
+}
+
+QTableWidget::item:selected, QTableView::item:selected {
+    background-color: %ACCENT_SUBTLE%;
+    color: %TEXT_PRIMARY%;
+}
+
+QHeaderView::section {
+    background-color: %PANEL_BG%;
+    color: %TEXT_SECONDARY%;
+    border: none;
+    border-bottom: 1px solid %BORDER%;
+    padding: 7px 8px;
+    font-weight: 600;
+}
+
+QHeaderView::section:hover {
+    color: %TEXT_PRIMARY%;
+}
+
+/* ---------------------------------------------------------------- video window */
+
+QVideoWidget {
+    background-color: #000000;
+}
+
+/* ---------------------------------------------------------------- group box */
+
+QGroupBox {
+    border: 1px solid %BORDER_SUBTLE%;
+    border-radius: 8px;
+    margin-top: 12px;
+    padding-top: 10px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 12px;
+    padding: 0 5px;
+    color: %TEXT_SECONDARY%;
+    font-weight: 600;
+}

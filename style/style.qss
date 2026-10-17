@@ -1,0 +1,303 @@
+/* ================================================
+   全局基础设置 (保持原有深色基调)
+   ================================================ */
+MainWindow {
+    background-color: rgb(46, 47, 48);
+}
+
+QMenuBar {
+    color: rgb(231, 231, 231);
+    background-color: rgb(46, 47, 48);
+    border-bottom: 1px solid #3a3a3a; /* 增加底部分隔线 */
+}
+
+QMenu {
+    color: rgb(231, 231, 231);
+    background-color: rgb(55, 55, 55);
+    border: 1px solid #2a2a2a; /* 菜单增加边框 */
+    padding: 5px 0px;
+}
+
+QMenuBar::item:selected {
+    background-color: rgb(80, 80, 80);
+}
+
+QMenu::item:selected {
+    background-color: rgb(39, 96, 154);
+}
+
+/* ================================================
+   向导页面 (Wizard) - 保持原有逻辑，微调边框颜色
+   ================================================ */
+QWizard {
+    color: rgb(231, 231, 231);
+    background-color: rgb(46, 47, 48);
+}
+
+QWizard QLabel#tips {
+    color: #ff6b6b; /* 稍微柔和一点的红色 */
+}
+
+proSetPage {
+    background-color: #2b2b2b; /* 改为深色，避免向导突然变白闪瞎眼 */
+    border: 1px solid #444;
+}
+
+/* 修改输入框和文字以适应深色向导 */
+proSetPage QLabel {
+    color: #eeeeee;
+    font-size: 14px;
+}
+
+proSetPage QLineEdit {
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 6px;
+    background-color: #333;
+    color: #fff;
+    selection-background-color: #39609a;
+}
+
+proSetPage QLineEdit:focus {
+    border: 1px solid #39609a;
+}
+
+proSetPage QPushButton {
+    background-color: #39609a;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+proSetPage QPushButton:hover {
+    background-color: #4a7bbd;
+}
+
+proSetPage QPushButton:pressed {
+    background-color: #2b4c7a;
+}
+
+/* ================================================
+   项目树 (ProTree) - 侧边栏
+   ================================================ */
+ProTree {
+    border: none;
+    background-color: rgb(40, 41, 42);
+    padding-right: 5px;
+}
+
+QLabel#labelPro {
+    color: rgb(231,231,231);
+    border-color: #9F9F9F;
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+}
+
+QTreeView {
+    background-color: rgb(40, 41, 42); /* 与 ProTree 一致 */
+    color: rgb(220, 220, 220);
+    border: 0;
+    outline: 0; /* 去掉选中时的虚线框 */
+    show-decoration-selected: 0;
+}
+QTreeView::branch {
+    background-color: transparent;
+}
+QTreeView::branch:selected {
+    background-color: transparent;
+}
+QTreeView::branch:hover {
+    background-color: transparent;
+}
+QTreeView::item {
+    padding: 6px; /* 增加行高，不那么拥挤 */
+    border-radius: 4px; /* 选中项圆角 */
+    margin: 0px 5px;
+
+}
+
+QTreeView::item:hover {
+    background-color: rgba(255, 255, 255, 0.05); /* 悬停微亮 */
+}
+
+QTreeView::item:selected {
+    background-color: rgb(39, 96, 154);
+    color: white;
+}
+
+/* 分支图标保持不变 */
+QTreeView::branch:open:has-children:!has-siblings,
+QTreeView::branch:open:has-children:has-siblings {
+    image: url(:/icon/down.png);
+}
+
+QTreeView::branch:closed:has-children:!has-siblings,
+QTreeView::branch:closed:has-children:has-siblings {
+    image: url(:/icon/right.png);
+}
+
+/* ================================================
+   相册展示区 (PicShow) - 核心优化部分
+   ================================================ */
+PicShow {
+    /* 沉浸式暗黑背景，让图片更突显 */
+    background-color: #1e1e1e;
+
+    /* 细微的深色边框 */
+    border: 1px solid #333;
+    border-radius: 8px; /* 大圆角，更有现代感 */
+
+    /* 给内部留一点空间，或者设为0实现无边相册 */
+    padding: 0px;
+    margin: 5px; /* 与侧边栏拉开一点距离 */
+}
+
+/* 针对 PicShow 内部的 ScrollArea (如果有) */
+PicShow QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+
+/* ================================================
+   上一张/下一张 按钮悬浮效果
+   ================================================ */
+#nextBtn, #previousBtn, #closeBtn, #slidepreBtn,#slidenextBtn,#playBtn {
+    border: none;
+    background-color: rgba(0, 0, 0, 0); /* 默认完全透明 */
+    border-radius: 20px; /* 如果按钮是正方形，这会变成圆形 */
+    margin: 10px;
+}
+
+/* 鼠标悬停时出现半透明黑底，提示可点击 */
+#nextBtn:hover, #previousBtn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* 按下时反馈 */
+#nextBtn:pressed, #previousBtn:pressed {
+    background-color: rgba(255, 255, 255, 0.25);
+    padding: 1px; /* 微动效果 */
+}
+
+/* ================================================
+   全局滚动条美化 (适配深色模式)
+   ================================================ */
+QScrollBar:vertical {
+    border: none;
+    background: #2b2b2b;
+    width: 10px;
+    margin: 0px 0px 0px 0px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical {
+    background: #555;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #777;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+QScrollBar:horizontal {
+    border: none;
+    background: #2b2b2b;
+    height: 10px;
+    margin: 0px 0px 0px 0px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #555;
+    min-width: 20px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: #777;
+}
+
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    width: 0px;
+}
+
+/* ================================================
+   轮播图样式
+   ================================================ */
+SlideShowDlg {
+    color: rgb(231, 231, 231);
+    background: rgb(46,47,48);
+}
+
+/* 所展示图片的名字显示区域 */
+#preListWidget {
+    color: rgb(231, 231, 231);
+    background: rgb(46,47,48);
+    border: 0px;
+}
+
+#preListWidget::item:hover {
+    background:rgb(38,95,153);
+}
+
+#preListWidget::item:selected {
+    background: rgb(38,95,153);
+}
+
+#slideprewid {
+    margin-left:10px;
+}
+
+#slidenextwid {
+    margin-right:10px;
+}
+
+#preListWidget::item:selected:active {
+    border:2px solid #ffffff;
+}
+
+#preListWidget::item:selected {
+    border:2px solid #ffffff;
+}
+
+QPushButton#closeBtn {
+    background-color: transparent;
+    border: none;
+    border-radius: 4px; /* 4px 圆角，比直角更现代 */
+    padding: 5px;       /* 增加内边距，让鼠标更容易点中 */
+}
+
+QPushButton#closeBtn:hover {
+    background-color: #e81123; /* Windows 标准关闭红 */
+}
+
+QPushButton#closeBtn:pressed {
+    background-color: #ac0d1a; /* 比悬停更深一点的红 */
+    padding-top: 6px;          /* 图标轻微下沉的机械手感 */
+    padding-bottom: 4px;
+}
+
+
+#searchEdit {
+    background-color: #2e2f30;
+    color: #e6e6e6;
+    border: 1px solid #3c3d3e;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+}
+#searchEdit:focus {
+    border: 1px solid #409EFF;
+    background-color: #333436;
+}
+#searchEdit::placeholder {
+    color: #8a8a8a;
+}
